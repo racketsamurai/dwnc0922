@@ -52,10 +52,10 @@ export function MailEtiquette() {
             <div className="etiquette-index"><span>{item.number}</span>{index < guidance.length - 1 && <b aria-hidden="true" />}</div>
             <div><h3>{item.title}</h3><p>{item.body}</p></div>
           </article>
-          {asides[index] && <aside className="etiquette-aside"><span aria-hidden="true" /><div><p className="eyebrow">SIDE NOTE</p><h3>{asides[index].title}</h3><p>{asides[index].body}</p></div></aside>}
+          {asides[index] && <aside className="etiquette-aside"><Image className="drill-hole-mark" src="/drill-hole-mark.png" alt="" width={96} height={96} /><div><p className="eyebrow">SIDE NOTE</p><h3>{asides[index].title}</h3><p>{asides[index].body}</p></div></aside>}
         </div>)}
       </div>
-      <div className="etiquette-closing"><span className="small-hole" aria-hidden="true" /><p>좋은 메일은 나를 작게 만드는 글이 아니라, 상대가 편하게 답할 수 있도록 정보를 정리한 글입니다.</p></div>
+      <div className="etiquette-closing"><Image className="drill-hole-mark" src="/drill-hole-mark.png" alt="" width={96} height={96} /><p>좋은 메일은 나를 작게 만드는 글이 아니라, 상대가 편하게 답할 수 있도록 정보를 정리한 글입니다.</p></div>
     </section>
   );
 }
