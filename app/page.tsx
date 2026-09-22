@@ -62,6 +62,7 @@ export default function HomePage() {
         <div className="field">
           <label htmlFor="draft">메일 초안 <small>선택</small></label>
           <textarea id="draft" value={form.draft} onChange={(e) => setForm({ ...form, draft: e.target.value })} placeholder="초안을 붙여넣거나 비워 두면 목적별 모범 답안을 보여드립니다." rows={12} />
+          <p className="draft-hint">AI 피드백은 <strong>10자 이상</strong>의 초안부터 받을 수 있어요. 비워 두면 목적별 모범 답안을 바로 보여드립니다.</p>
         </div>
         <div className="two-columns">
           <div className="field">
