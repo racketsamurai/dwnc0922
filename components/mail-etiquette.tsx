@@ -26,24 +26,37 @@ const guidance = [
   },
 ];
 
+const asides: Record<number, { title: string; body: string }> = {
+  1: {
+    title: "늦은 밤의 ‘보내기’ 버튼",
+    body: "술기운에 보낸 메일을 발견했다면, 당황한 마음으로 긴 변명 메일을 연달아 보내지는 마세요. 다음날 필요한 사실만 차분히 정리해 한 통으로 정정하면 됩니다. ‘어젯밤 메일 중 표현이 적절하지 못한 부분이 있어 다시 연락드립니다’ 정도면 충분합니다. 메일도 숙취처럼, 물을 많이 마신다고 바로 해결되지는 않습니다.",
+  },
+  3: {
+    title: "교수님도 사람입니다",
+    body: "교수님도 회의가 있고, 마감이 있고, 답장을 놓치는 날이 있습니다. 답이 늦다고 같은 내용을 여러 통 보내기보다 며칠의 여유를 두고 한 번만 정중히 확인해 보세요. 빠른 답장을 요구하지 않는 태도는 오히려 메일의 신뢰를 높입니다.",
+  },
+};
+
 export function MailEtiquette() {
   return (
     <section className="etiquette-section" aria-labelledby="etiquette-title">
-      <div className="drill-divider" aria-hidden="true"><i /><i /><i /></div>
+      <div className="paper-divider" aria-hidden="true"><Image src="/drill-paper-divider.png" alt="" width={2172} height={724} sizes="(max-width: 780px) 100vw, 780px" /></div>
       <header className="etiquette-header">
         <p className="eyebrow">MAIL MANNERS / NOTE</p>
         <h2 id="etiquette-title">교수님께 드리는 메일의<br />기본은 담담함입니다.</h2>
         <p>한 번 더 공손하게, 그러나 과장하지 않게. 요청을 분명히 전하기 위한 다섯 가지 기준입니다.</p>
       </header>
       <div className="etiquette-list">
-        {guidance.map((item, index) => (
-          <article className="etiquette-item" key={item.number}>
+        {guidance.map((item, index) => <div key={item.number}>
+          <article className="etiquette-item">
             <div className="etiquette-index"><span>{item.number}</span>{index < guidance.length - 1 && <b aria-hidden="true" />}</div>
             <div><h3>{item.title}</h3><p>{item.body}</p></div>
           </article>
-        ))}
+          {asides[index] && <aside className="etiquette-aside"><span aria-hidden="true" /><div><p className="eyebrow">SIDE NOTE</p><h3>{asides[index].title}</h3><p>{asides[index].body}</p></div></aside>}
+        </div>)}
       </div>
       <div className="etiquette-closing"><span className="small-hole" aria-hidden="true" /><p>좋은 메일은 나를 작게 만드는 글이 아니라, 상대가 편하게 답할 수 있도록 정보를 정리한 글입니다.</p></div>
     </section>
   );
 }
+import Image from "next/image";
