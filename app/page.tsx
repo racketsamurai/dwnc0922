@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useFeedback } from "@/components/feedback-context";
 import type { FeedbackInput, FeedbackResult, RequestPurpose } from "@/types/feedback";
 import { getSampleFeedback } from "@/lib/sample-feedback";
+import { MailEtiquette } from "@/components/mail-etiquette";
 
 const purposes: RequestPurpose[] = ["결석 양해", "성적 관련 요청", "서명 요청", "기타"];
 
@@ -81,6 +82,7 @@ export default function HomePage() {
         {error && <p className="error-message" role="alert">{error}</p>}
         <button className="primary-button" type="submit" disabled={isLoading}>{isLoading ? "피드백 작성 중…" : form.draft.trim() ? "피드백 받기" : "모범 답안 보기"}</button>
       </form>
+      <MailEtiquette />
       {showSampleFallback && <div className="modal-backdrop" role="presentation"><section className="sample-modal" role="dialog" aria-modal="true" aria-labelledby="fallback-title"><p className="eyebrow">ALTERNATIVE</p><h2 id="fallback-title">AI 피드백을 불러오지 못했습니다.</h2><p>초안에 고칠 부분이 거의 없거나 연결 상태에 따라 결과 생성이 어려울 수 있습니다. 선택한 목적의 모범 답안을 바로 확인할 수 있습니다.</p><div className="modal-actions"><button className="secondary-button" type="button" onClick={() => setShowSampleFallback(false)}>닫기</button><button className="primary-button" type="button" onClick={() => { setFeedback(form, getSampleFeedback(form.purpose)); router.push("/result"); }}>모범 답안 보기</button></div></section></div>}
     </main>
   );
