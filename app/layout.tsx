@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
 import { FeedbackProvider } from "@/components/feedback-context";
 import "./globals.css";
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={GeistSans.variable}>
       <body>
         <FeedbackProvider>{children}</FeedbackProvider>
       </body>

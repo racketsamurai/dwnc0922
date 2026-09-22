@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { FeedbackInput, FeedbackResult, RequestPurpose } from "@/types/feedback";
 
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-3.5-flash";
 const purposes: RequestPurpose[] = ["결석 양해", "성적 관련 요청", "서명 요청", "기타"];
 
 const responseSchema = {
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   const userPrompt = `요청 목적: ${input.purpose}\n추가 맥락: ${input.context.trim() || "없음"}\n수신자: 교수님\n\n메일 초안:\n${input.draft.trim()}`;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, {
+    const geminiRequest = {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
       body: JSON.stringify({
@@ -61,7 +61,14 @@ export async function POST(request: Request) {
         contents: [{ role: "user", parts: [{ text: userPrompt }] }],
         generationConfig: { responseMimeType: "application/json", responseSchema, temperature: 0.35 },
       }),
-    });
+    };
+    let response: Response | undefined;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`, geminiRequest);
+      if (response.ok || (response.status !== 429 && response.status < 500) || attempt === 2) break;
+      await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)));
+    }
+    if (!response) throw new Error("Gemini API 요청을 시작하지 못했습니다.");
     const geminiResponse = (await response.json()) as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>; error?: { message?: string } };
     if (!response.ok) throw new Error(geminiResponse.error?.message || "Gemini API 요청에 실패했습니다.");
     const outputText = geminiResponse.candidates?.[0]?.content?.parts?.[0]?.text;
